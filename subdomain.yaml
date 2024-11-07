@@ -1,0 +1,60 @@
+
+# author: leadlife
+# get subdomain from subfinder, crt.sh (tls), rapiddns, hackerone api, ksubdomain brute force, alterx gen, dnsx validation
+
+vars:
+  DOMAIN: "domains.txt"
+  USAGE: "rayder -w subdomain-mutli.yaml DOMAIN=domains.txt"
+
+
+parallel: false
+
+modules:
+
+  - name: subfinder
+    silent: true
+    cmds: 
+      - cat {{DOMAIN}} | subfinder -silent -all | anew subfinder_output.txt
+
+  - name: TLS
+    silent: true
+    cmds:
+      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://crt.sh/?q=%.{}&output=json"' | jq -r '.[].name_value' | anew tls_output.txt
+
+  - name: rapiddns
+    silent: true
+    cmds:
+      - cat {{DOMAIN}} | parallel -j 4 'rapiddns -s {}' | anew rapiddns_output.txt
+
+  - name: hackerone
+    silent: true
+    cmds:
+      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://api.hackertarget.com/hostsearch/?q={}"' | anew | morefind -d | tee hackerone_output.txt
+
+    # active brute force subdomain
+  - name: ksubdomain
+    silent: true
+    cmds:
+      - ksubdomain e -dl {{DOMAIN}} -f ~/wordlists/subdoamin.txt  --only-domain -o ksubdomain_output.txt
+  
+  - name: alterx
+    silent: true
+    cmds:
+      - cat {{DOMAIN}} | alterx -silent | anew alterx_output.txt
+
+  - name: organize
+    silent: true
+    cmds:
+      - cat subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt alterx_output.txt ksubdomain_output.txt | anew subdomain_output.txt
+
+  - name: dnsx
+    silent: true
+    cmds:
+      - cat subdomain_output.txt | dnsx -silent | tee subdomain_result.txt
+  
+  - name: clear files
+    silent: true
+    cmds:
+      - rm -rf subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt alterx_output.txt subdomain_output.txt 
+  
+ #  # result are similer demo.example.com

@@ -1,0 +1,17 @@
+vars:
+  DOMAIN: "example.tld"
+  OUTPUT: "crlf-vuln-results"
+  USAGE: "rayder -w workflow.yaml DOMAIN=example.tld"
+
+parallel: false
+
+modules:
+  - name: start mkdir
+    silent: true
+    cmds:
+      - mkdir -p {{OUTPUT_DIR}}
+
+  - name: http-probing
+    silent: true
+    cmds:
+      - httpx -silent -threads 100 < {{OUTPUT_DIR}}/subdomains.txt | tee {{OUTPUT_DIR}}/http-probe-results.txt

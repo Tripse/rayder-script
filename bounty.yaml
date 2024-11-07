@@ -1,0 +1,63 @@
+
+vars:
+  URL: "urls.txt"
+  USAGE: "rayder -w workflow.yaml URL=https://example.com"
+
+parallel: false
+
+modules:  
+
+  - name: gau
+    silent: true
+    cmds:
+      - cat {{URL}} | gauu | tee gau-result.txt
+
+  - name: katana 
+    silent: true
+    cmds:
+      - cat {{URL}} | katana -d 5 -jc -jsl -xhr -kf -fx -fs dn | tee katana-result.txt
+  
+  - name: conform
+    silent: true
+    cmds:
+      - cat gau-result.txt katana-result.txt | anew | httpx -silent | tee urls-result.txt
+
+  - name: sensitive
+    silent: true
+    cmds:
+      - cat urls-result.txt | gff intersting_ext | tee sensitive-result.txt
+
+  - name: lfi
+    silent: true
+    cmds:
+      - cat urls-result.txt | gff lfi | uro | sed 's/=.*/=/' | nuclei -t ~/nuclei-tripse/dast/lfi/ -dast | tee lfi-result.txt
+
+  - name: sqli
+    silent: true
+    cmds:
+      - cat urls-result.txt | gff sqli | uro | sed 's/=.*/=/' | nuclei -t ~/nuclei-tripse/dast/sqli/ -dast | tee sqli-result.txt
+
+  - name: xss
+    silent: true
+    cmds:
+      - cat urls-result.txt | gff xss | uro | sed 's/=.*/=/' | dalfox pipe -o xss-result.txt
+  
+  - name: ssrf
+    silent: true
+    cmds:
+      - cat urls-result.txt | gff ssrf | uro | sed 's/=.*/=/' | nuclei -t ~/nuclei-tripse/dast/ssrf/ -dast | tee ssrf-result.txt
+    
+  - name: rce
+    silent: true
+    cmds:
+      - cat urls-result.txt | gff rce | uro | sed 's/=.*/=/' | nuclei -t ~/nuclei-tripse/dast/cmdi/ -dast | tee rce-result.txt
+
+  - name: ssti
+    silent: true
+    cmds:
+      - cat urls-result.txt | gff ssti | uro | sed 's/=.*/=/' | nuclei -t ~/nuclei-tripse/dast/ssti/ -dast | tee ssti-result.txt
+    
+  - name: clean
+    silent: true
+    cmds:
+      - rm -rf gau-result.txt katana-result.txt
