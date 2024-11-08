@@ -20,12 +20,12 @@ modules:
   - name: conform
     silent: true
     cmds:
-      - cat gau-result.txt katana-result.txt | anew | httpx -silent -fc 404 | tee urls-result.txt
+      - cat gau-result.txt katana-result.txt | anew | tee urls-result.txt
 
   - name: sensitive
     silent: true
     cmds:
-      - cat urls-result.txt | gff intersting_ext | tee sensitive-result.txt
+      - cat urls-result.txt | gff intersting_ext | httpx -silent -fc 404 | tee sensitive-result.txt
 
   - name: lfi
     silent: true
