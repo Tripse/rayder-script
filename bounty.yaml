@@ -56,7 +56,7 @@ modules:
     silent: true
     cmds:
       - cat urls-result.txt | gff ssti | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/ssti/ -dast | tee ssti-result.txt
-    
+  
   - name: clean
     silent: true
     cmds:
