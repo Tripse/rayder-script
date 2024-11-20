@@ -25,7 +25,11 @@ modules:
   - name: sensitive
     silent: true
     cmds:
+      # sensitive files、js content
       - cat urls-result.txt | gff intersting_ext | httpx -silent -fc 404 | tee sensitive-result.txt
+      - cat urls-result.txt | grep ".js$" | anew | tee jsurls-result.txt
+      - cat jsurls-result.txt | anew | mantra | tee sensitive-result.txt
+      - cat jsurls-result.txt | anew | nipejs | tee sensitive-result.txt
 
   - name: lfi
     silent: true
@@ -60,4 +64,4 @@ modules:
   - name: clean
     silent: true
     cmds:
-      - rm -rf gau-result.txt katana-result.txt
+      - rm -rf gau-result.txt katana-result.txt jsurls-result.txt
