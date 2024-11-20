@@ -10,58 +10,54 @@ modules:
   - name: gau
     silent: true
     cmds:
-      - cat {{URL}} | gauu | tee gau-result.txt
+      - cat {{URL}} | gauu | tee gau_result.txt
 
   - name: katana 
     silent: true
     cmds:
-      - cat {{URL}} | katana -d 5 -jc -jsl -xhr -kf -fx -fs dn | tee katana-result.txt
+      - cat {{URL}} | katana -d 5 -jc -jsl -xhr -kf -fx -fs dn | tee katana_result.txt
   
   - name: conform
     silent: true
     cmds:
-      - cat gau-result.txt katana-result.txt | anew | tee urls-result.txt
+      - cat gau_result.txt katana_result.txt | anew | tee urls_result.txt
 
   - name: sensitive
     silent: true
     cmds:
-      # sensitive files、js content
-      - cat urls-result.txt | gff intersting_ext | httpx -silent -fc 404 | tee sensitive-result.txt
-      - cat urls-result.txt | grep ".js$" | anew | tee jsurls-result.txt
-      - cat jsurls-result.txt | anew | mantra | tee sensitive-result.txt
-      - cat jsurls-result.txt | anew | nipejs | tee sensitive-result.txt
+      - cat urls_result.txt | gff intersting_ext | httpx -silent -fc 404 | tee sensitive_result.txt
 
   - name: lfi
     silent: true
     cmds:
-      - cat urls-result.txt | gff lfi | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/lfi/ -dast | tee lfi-result.txt
+      - cat urls_result.txt | gff lfi | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/lfi/ -dast | tee lfi_result.txt
 
   - name: sqli
     silent: true
     cmds:
-      - cat urls-result.txt | gff sqli | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/sqli/ -dast | tee sqli-result.txt
+      - cat urls_result.txt | gff sqli | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/sqli/ -dast | tee sqli_result.txt
 
   - name: xss
     silent: true
     cmds:
-      - cat urls-result.txt | gff xss | uro | sed 's/=.*/=/' | anew | dalfox pipe -o xss-result.txt
+      - cat urls_result.txt | gff xss | uro | sed 's/=.*/=/' | anew | dalfox pipe -o xss_result.txt
   
   - name: ssrf
     silent: true
     cmds:
-      - cat urls-result.txt | gff ssrf | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/ssrf/ -dast | tee ssrf-result.txt
+      - cat urls_result.txt | gff ssrf | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/ssrf/ -dast | tee ssrf_result.txt
     
   - name: rce
     silent: true
     cmds:
-      - cat urls-result.txt | gff rce | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/cmdi/ -dast | tee rce-result.txt
+      - cat urls_result.txt | gff rce | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/cmdi/ -dast | tee rce_result.txt
 
   - name: ssti
     silent: true
     cmds:
-      - cat urls-result.txt | gff ssti | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/ssti/ -dast | tee ssti-result.txt
+      - cat urls_result.txt | gff ssti | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/ssti/ -dast | tee ssti_result.txt
   
   - name: clean
     silent: true
     cmds:
-      - rm -rf gau-result.txt katana-result.txt jsurls-result.txt
+      - rm -rf gau_result.txt katana_result.txt jsurls_result.txt
