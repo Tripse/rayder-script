@@ -60,7 +60,7 @@ modules:
   - name: nuclei
     silent: true
     cmds:
-      - cat urls_result.txt | nuclei -t ~/nuclei-tripse/bounty | tee nuclei_result
+      - cat urls_result.txt | nuclei -t ~/nuclei-tripse/bounty | tee nuclei_result.txt
 
   - name: clean
     silent: true
