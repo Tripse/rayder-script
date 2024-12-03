@@ -15,7 +15,7 @@ modules:
   - name: katana 
     silent: true
     cmds:
-      - cat {{URL}} | katana -d 5 -jc -jsl -xhr -kf all -fx -fs dn | tee katana_result.txt
+      - cat {{URL}} | katana -jc -jsl -xhr -kf all -fx -fs dn | tee katana_result.txt
   
   - name: conform
     silent: true
