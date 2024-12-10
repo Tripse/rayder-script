@@ -57,7 +57,7 @@ modules:
     cmds:
       - cat urls_result.txt | gff ssti | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/ssti/ -dast | tee ssti_result.txt
   
-  - name: nuclei bounty
+  - name: nuclei scan use bounty
     silent: true
     cmds:
       - cat urls.txt | nuclei -t ~/nuclei-tripse/bounty | tee bounty_template_result.txt
@@ -65,12 +65,12 @@ modules:
   - name: nuclei scan use myself template
     silent: true
     cmds:
-      - cat urls.txt | nuclei -t ~/nuclei-tripse/vulnerabilities | tee myself_template_result.txt
+      - cat urls.txt | nuclei -etags time -t ~/nuclei-tripse/vulnerabilities | tee myself_template_result.txt
   
   - name: nuclei scan use official template
     silent: true
     cmds:
-      - cat urls.txt | nuclei -es info,low | tee official_template_result.txt
+      - cat urls.txt | nuclei -es info | tee official_template_result.txt
 
   - name: clean
     silent: true
