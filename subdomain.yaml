@@ -6,7 +6,6 @@ vars:
   DOMAIN: "domains.txt"
   USAGE: "rayder -w subdomain-mutli.yaml DOMAIN=domains.txt"
 
-
 parallel: false
 
 modules:
@@ -52,9 +51,20 @@ modules:
     cmds:
       - cat subdomain_output.txt | dnsx -silent | tee subdomain_result.txt
   
+  - name: get cname for myself check
+    silent: true
+    cmds:
+      - cat subdomain_result.txt | while read domain;do dig  $domain;done | tee -a digs.txt
+      - cat digs.txt | grep CNAME | tee cname_result.txt
+  
+  - name: subzy takeover check
+    silent: true
+    cmds:
+      - subzy run --targets subdomain_result.txt | tee -a subzy_result.txt
+  
   - name: clear files
     silent: true
     cmds:
-      - rm -rf subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt alterx_output.txt subdomain_output.txt 
+      - rm -rf subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt alterx_output.txt subdomain_output.txt digs.txt
   
  #  # result are similer demo.example.com
