@@ -67,4 +67,4 @@ modules:
     cmds:
       - rm -rf subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt alterx_output.txt subdomain_output.txt digs.txt
   
- #  # result are similer demo.example.com
+# result are similer demo.example.com

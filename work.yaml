@@ -65,7 +65,7 @@ modules:
   - name: nuclei scan use myself template
     silent: true
     cmds:
-      - cat urls.txt | nuclei -etags time -t ~/nuclei-tripse/vulnerabilities | tee myself_template_result.txt
+      - cat urls.txt | nuclei -t ~/nuclei-tripse/vulnerabilities | tee myself_template_result.txt
   
   - name: nuclei scan use official template
     silent: true
