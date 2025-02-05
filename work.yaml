@@ -6,7 +6,6 @@ vars:
 parallel: false
 
 modules:  
-
   - name: gau
     silent: true
     cmds:
