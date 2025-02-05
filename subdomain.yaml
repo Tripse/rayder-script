@@ -9,7 +9,6 @@ vars:
 parallel: false
 
 modules:
-
   - name: subfinder
     silent: true
     cmds: 
@@ -34,37 +33,50 @@ modules:
   - name: ksubdomain
     silent: true
     cmds:
-      - ksubdomain e -dl {{DOMAIN}} -f ~/wordlists/subdoamin.txt  --only-domain -o ksubdomain_output.txt
-  
-  - name: alterx
-    silent: true
-    cmds:
-      - cat {{DOMAIN}} | alterx -silent | anew alterx_output.txt
+      - ksubdomain e -dl {{DOMAIN}} -f ~/wordlists/domain/subdoamin.txt --only-domain -o ksubdomain_output.txt
 
   - name: organize
     silent: true
     cmds:
-      - cat subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt alterx_output.txt ksubdomain_output.txt | anew subdomain_output.txt
+      - cat subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt | anew subdomain_output.txt
+  
+  - name: dnsgen morph
+    silent: true
+    cmds:
+      - cat domains.txt | dnsgen - | tee dnsgen_output.txt
 
   - name: dnsx
     silent: true
     cmds:
-      - cat subdomain_output.txt | dnsx -silent | tee subdomain_result.txt
+      - cat subdomain_output.txt dnsgen_output.txt | dnsx -silent -r ~/wordlists/resolvers.txt -t 200 | tee subdomain_result.txt
   
-  - name: get cname for myself check
+  - name: naabu
     silent: true
     cmds:
-      - cat subdomain_result.txt | while read domain;do dig  $domain;done | tee -a digs.txt
-      - cat digs.txt | grep CNAME | tee cname_result.txt
+      - cat subdomain_result.txt | naabu -Pn -top-ports 1000 -silent -c 200 -rate 10000 -o naabu_result.txt
   
-  - name: subzy takeover check
+  - name: httpx
     silent: true
     cmds:
-      - subzy run --targets subdomain_result.txt | tee -a subzy_result.txt
+      - cat naabu_result.txt | httpx -silent | tee httpx_result.txt
+
+  # - name: get cname for myself check
+  #   silent: true
+  #   cmds:
+  #     - cat subdomain_result.txt | while read domain;do dig $domain;done | tee -a digs.txt
+  #     - cat digs.txt | grep CNAME | tee cname_result.txt
+  
+  # - name: subzy takeover check
+  #   silent: true
+  #   cmds:
+  #     - subzy run --targets subdomain_result.txt | tee -a subzy_result.txt
   
   - name: clear files
     silent: true
     cmds:
-      - rm -rf subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt alterx_output.txt subdomain_output.txt digs.txt
+      - rm -rf subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt subdomain_output.txt dnsgen_output.txt digs.txt
   
-# result are similer demo.example.com
+# result are similar
+# demo.example.com
+# demo.example.com:7001
+# http://demo.example.com:7001
