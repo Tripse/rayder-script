@@ -70,6 +70,11 @@ modules:
     silent: true
     cmds:
       - cat urls.txt | nuclei -es info | tee official_template_result.txt
+  
+  - name: afrog scan
+    silent: true
+    cmds:
+      - afrog -T urls.txt -o afrog_result.html -silent
 
   - name: clean
     silent: true
