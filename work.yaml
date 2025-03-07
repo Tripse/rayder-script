@@ -61,15 +61,10 @@ modules:
     cmds:
       - cat urls.txt | nuclei -t ~/nuclei-tripse/bounty | tee bounty_template_result.txt
   
-  - name: nuclei scan use myself template
-    silent: true
-    cmds:
-      - cat urls.txt | nuclei -t ~/nuclei-tripse/vulnerabilities | tee myself_template_result.txt
-  
   - name: nuclei scan use official template
     silent: true
     cmds:
-      - cat urls.txt | nuclei -es info | tee official_template_result.txt
+      - cat urls.txt | nuclei | tee official_template_result.txt
   
   - name: afrog scan
     silent: true
