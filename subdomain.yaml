@@ -40,15 +40,10 @@ modules:
     cmds:
       - cat subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt | anew subdomain_output.txt
   
-  - name: dnsgen morph
-    silent: true
-    cmds:
-      - cat domains.txt | dnsgen - | tee dnsgen_output.txt
-
   - name: dnsx
     silent: true
     cmds:
-      - cat subdomain_output.txt dnsgen_output.txt | anew | dnsx -silent -r ~/wordlists/resolvers.txt -t 200 | tee subdomain_result.txt
+      - cat subdomain_output.txt | anew | dnsx -silent -r ~/wordlists/resolvers.txt -t 200 | tee subdomain_result.txt
   
   - name: naabu
     silent: true
