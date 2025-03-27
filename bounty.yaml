@@ -37,10 +37,10 @@ modules:
     cmds:
       - cat urls_result.txt | gff sqli | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/sqli/ -dast | tee sqli_result.txt
 
-  - name: xss
-    silent: true
-    cmds:
-      - cat urls_result.txt | gff xss | uro | sed 's/=.*/=/' | anew | dalfox pipe -o xss_result.txt
+  # - name: xss
+  #   silent: true
+  #   cmds:
+  #     - cat urls_result.txt | gff xss | uro | sed 's/=.*/=/' | anew | dalfox pipe -o xss_result.txt
   
   - name: ssrf
     silent: true

@@ -43,7 +43,7 @@ modules:
   - name: dnsx
     silent: true
     cmds:
-      - cat subdomain_output.txt | anew | dnsx -silent -r ~/wordlists/resolvers.txt -t 200 | tee subdomain_result.txt
+      - cat subdomain_output.txt | anew | dnsx -silent -r ~/wordlists/sup/resolvers.txt -t 200 | tee subdomain_result.txt
   
   - name: naabu
     silent: true
