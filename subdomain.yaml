@@ -33,7 +33,7 @@ modules:
   - name: ksubdomain
     silent: true
     cmds:
-      - ksubdomain e -dl {{DOMAIN}} -f ~/wordlists/domain/subdoamin-large.txt --only-domain -o ksubdomain_output.txt
+      - ksubdomain e -dl {{DOMAIN}} -f ~/wordlists/domain/subdoamin.txt --only-domain -o ksubdomain_output.txt
 
   - name: organize
     silent: true
