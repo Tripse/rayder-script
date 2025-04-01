@@ -45,15 +45,15 @@ modules:
     cmds:
       - cat subdomain_output.txt | anew | dnsx -silent -r ~/wordlists/sup/resolvers.txt -t 200 | tee subdomain_result.txt
   
-  - name: naabu
-    silent: true
-    cmds:
-      - cat subdomain_result.txt | naabu -Pn -top-ports 1000 -silent -c 200 -rate 10000 -o naabu_result.txt
+  # - name: naabu
+  #   silent: true
+  #   cmds:
+  #     - cat subdomain_result.txt | naabu -Pn -top-ports 1000 -silent -c 200 -rate 10000 -o naabu_result.txt
   
-  - name: httpx
-    silent: true
-    cmds:
-      - cat naabu_result.txt | httpx -silent | tee httpx_result.txt
+  # - name: httpx
+  #   silent: true
+  #   cmds:
+  #     - cat naabu_result.txt | httpx -silent | tee httpx_result.txt
 
   # - name: get cname for myself check
   #   silent: true
@@ -69,7 +69,7 @@ modules:
   - name: clear files
     silent: true
     cmds:
-      - rm -rf subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt subdomain_output.txt dnsgen_output.txt digs.txt
+      - rm -rf subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt subdomain_output.txt 
   
 # result are similar
 # demo.example.com
