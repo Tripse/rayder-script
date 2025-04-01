@@ -6,10 +6,10 @@ vars:
 parallel: false
 
 modules:  
-  - name: gau
-    silent: true
-    cmds:
-      - cat {{URL}} | gauu | tee gau_result.txt
+  # - name: gau
+  #   silent: true
+  #   cmds:
+  #     - cat {{URL}} | gauu | tee gau_result.txt
 
   - name: katana 
     silent: true
@@ -19,7 +19,9 @@ modules:
   - name: conform
     silent: true
     cmds:
-      - cat gau_result.txt katana_result.txt | anew | tee urls_result.txt
+      - cat katana_result.txt | anew | tee urls_result.txt
+      # stop gau for lots of  tragets
+      # - cat gau_result.txt katana_result.txt | anew | tee urls_result.txt
 
   - name: sensitive
     silent: true
