@@ -1,6 +1,6 @@
 
 # author: leadlife
-# get subdomain from subfinder, crt.sh (tls), rapiddns, hackerone api, ksubdomain brute force, alterx gen, dnsx validation
+# get subdomain from subfinder, crt.sh (tls), rapiddns, hackerone api, ksubdomain brute force, alterx gen, dnsx validation ... more
 
 vars:
   DOMAIN: "domains.txt"
@@ -68,7 +68,7 @@ modules:
   - name: organize
     silent: true
     cmds:
-      - cat subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt | anew subdomain_output.txt
+      - cat subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt ksubdomain_output.txt | anew subdomain_output.txt
   
   - name: dnsx
     silent: true
@@ -101,8 +101,8 @@ modules:
   - name: clear files
     silent: true
     cmds:
-      - rm -rf subfinder_output.txt tls_output.txt rapiddns_output.txt hackerone_output.txt ksubdomain_output.txt subdomain_output.txt 
-  
+      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt ksubdomain_output.txt subdomain_output.txt 
+
 # result are similar
 # demo.example.com
 # demo.example.com:7001
