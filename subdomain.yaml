@@ -14,10 +14,30 @@ modules:
     cmds: 
       - cat {{DOMAIN}} | subfinder -silent -all | anew subfinder_output.txt
 
-  - name: TLS
+  - name: crt - ssl
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://crt.sh/?q=%.{}&output=json"' | jq -r '.[].name_value' | anew tls_output.txt
+      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://crt.sh/?q=%.{}&output=json"' | jq -r '.[].name_value' | anew crt_ssl_output.txt
+
+  - name: certspotter - ssl
+    silent: true
+    cmds:
+      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://api.certspotter.com/v1/issuances?domain={}&include_subdomains=true&expand=dns_names"' | jq -r '.[].dns_names' | morefind -d | anew | tee certspotter_ssl_output.txt
+
+  - name: web archive
+    silent: true
+    cmds:
+      - cat {{DOMAIN}} | parallel -j 4 'curl -s "http://web.archive.org/cdx/search/cdx?url=*.{}/*&output=text&fl=original&collapse=urlkey"' | sed -e 's_https*://__' -e "s/\/.*//" | sort -u | anew | tee web_archive_output.txt
+
+  - name: jldc
+    silent: true
+    cmds:
+      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://jldc.me/anubis/subdomains/{}"' | morefind -d | anew | tee jldc_output.txt
+
+  - name: anubis
+    silent: true
+    cmds:
+      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://jldc.me/anubis/subdomains/{}"' | morefind -d | anew | tee anubis_output.txt
 
   - name: rapiddns
     silent: true
@@ -28,6 +48,16 @@ modules:
     silent: true
     cmds:
       - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://api.hackertarget.com/hostsearch/?q={}"' | anew | morefind -d | tee hackerone_output.txt
+
+  - name: hackertarget
+    silent: true
+    cmds:
+      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://api.hackertarget.com/hostsearch/?q={}"' | anew | morefind -d | tee hackertarget_output.txt
+
+  - name: subdomain center
+    silent: true
+    cmds:
+      - cat {{DOMAIN}} | parallel -j 4 'curl "https://api.subdomain.center/?domain={}"' | anew | morefind -d | tee subdomain_center_output.txt
 
     # active brute force subdomain
   - name: ksubdomain
@@ -45,15 +75,17 @@ modules:
     cmds:
       - cat subdomain_output.txt | anew | dnsx -silent -r ~/wordlists/sup/resolvers.txt -t 200 | tee subdomain_result.txt
   
-  # - name: naabu
-  #   silent: true
-  #   cmds:
-  #     - cat subdomain_result.txt | naabu -Pn -top-ports 1000 -silent -c 200 -rate 10000 -o naabu_result.txt
+  # naabu_result.txt use to dddd scan
+  - name: naabu
+    silent: true
+    cmds:
+      - cat subdomain_result.txt | naabu -Pn -top-ports 1000 -silent -c 200 -rate 10000 -o naabu_result.txt
   
-  # - name: httpx
-  #   silent: true
-  #   cmds:
-  #     - cat naabu_result.txt | httpx -silent | tee httpx_result.txt
+  # httpx_result.txt use to bounty scan
+  - name: httpx
+    silent: true
+    cmds:
+      - cat naabu_result.txt | httpx -silent | tee httpx_result.txt
 
   # - name: get cname for myself check
   #   silent: true
@@ -75,3 +107,5 @@ modules:
 # demo.example.com
 # demo.example.com:7001
 # http://demo.example.com:7001
+
+
