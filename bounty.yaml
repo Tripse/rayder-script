@@ -1,3 +1,12 @@
+# author: leadlife
+# bounty rayder workflow
+# cyber tools: gau, katana, nuclei, ghauri, xray, dalfox
+# sup tools: anew, gf, httpx, uro
+
+# require tools: 
+# https://github.com/Tripse/gf-patterns-ng
+# https://github.com/Tripse/rayder-script
+# https://github.com/Tripse/nuclei-tripse
 
 vars:
   URL: "urls.txt"
@@ -38,6 +47,12 @@ modules:
     silent: true
     cmds:
       - cat urls_result.txt | gff sqli | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/sqli/ -dast | tee sqli_result.txt
+
+  # ghauri with some error 
+  # - name: sqli ghauri
+  #   silent: true
+  #   cmds:
+  #     - ghauri -m sqli_params_output.txt --confirm --batch --level=3  -b 
 
   - name: ssrf dast
     silent: true
