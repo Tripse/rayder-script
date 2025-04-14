@@ -9,8 +9,8 @@
 # https://github.com/Tripse/nuclei-tripse
 
 vars:
-  URL: "urls.txt"
-  USAGE: "rayder -w workflow.yaml URL=urls.txt"
+  URL: "httpx_result.txt"
+  USAGE: "rayder -w workflow.yaml URL=httpx_result.txt"
 
 parallel: false
 
@@ -49,12 +49,6 @@ modules:
     cmds:
       - cat urls_result.txt | gff sqli | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/sqli/ -dast | tee sqli_result.txt
 
-  # ghauri with some error 
-  # - name: sqli ghauri
-  #   silent: true
-  #   cmds:
-  #     - ghauri -m sqli_params_output.txt --confirm --batch --level=3  -b 
-
   - name: ssrf dast
     silent: true
     cmds:
@@ -73,12 +67,7 @@ modules:
   - name: nuclei bounty
     silent: true
     cmds:
-      - cat urls.txt | nuclei -t ~/nuclei-tripse/bounty | tee bounty_template_result.txt
-
-  - name: xray scan
-    silent: true
-    cmds:
-      - for i in $(cat httpx_result.txt); do ./xray ws --basic-crawler $i --plugins xss,sqldet,xxe,ssrf,cmd-injection,path-traversal --ho $(date +"%T").html ; done
+      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty | tee bounty_template_result.txt
 
   - name: dalfox reflection xss
     silent: true
