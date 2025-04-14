@@ -63,7 +63,8 @@ modules:
   - name: ksubdomain
     silent: true
     cmds:
-      - ksubdomain e -dl {{DOMAIN}} -f ~/wordlists/domain/subdoamin.txt --only-domain -o ksubdomain_output.txt
+      - ksubdomain e --ds {{DOMAIN}} -f ~/wordlists/domain/subdoamin.txt -o ksubdomain_output_temp.txt
+      - cat ksubdomain_output.txt | morefind -d | tee ksubdomain_output.txt
 
   - name: organize
     silent: true
@@ -101,7 +102,7 @@ modules:
   - name: clear files
     silent: true
     cmds:
-      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt ksubdomain_output.txt subdomain_output.txt 
+      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt ksubdomain_output_temp.txt ksubdomain_output.txt subdomain_output.txt 
 
 # result are similar
 # demo.example.com
