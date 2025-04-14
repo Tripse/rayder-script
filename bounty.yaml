@@ -1,6 +1,6 @@
 # author: leadlife
 # bounty rayder workflow
-# cyber tools: gau, katana, nuclei, ghauri, xray, dalfox
+# cyber tools: gau, katana, nuclei, dalfox
 # sup tools: anew, gf, httpx, uro
 
 # require tools: 
@@ -24,7 +24,7 @@ modules:
   - name: katana 
     silent: true
     cmds:
-      # if get gov.cn use -fs fqdn, just dn is subdomain grab
+      # if get gov.cn use -fs fqdn, because dn is subdomain grab it will grabing more gov website out of ranges.
       - cat {{URL}} | katana -jc -jsl -xhr -kf all -fx -fs fqdn | tee katana_result.txt
   
   - name: conform

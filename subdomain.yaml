@@ -75,13 +75,13 @@ modules:
     cmds:
       - cat subdomain_output.txt | anew | dnsx -silent -r ~/wordlists/sup/resolvers.txt -t 200 | tee subdomain_result.txt
   
-  # naabu_result.txt use to dddd template scan
+  # naabu_result.txt use to dddd scan
   - name: naabu
     silent: true
     cmds:
       - cat subdomain_result.txt | naabu -Pn -top-ports 1000 -silent -c 200 -rate 10000 -o naabu_result.txt
   
-  # httpx_result.txt use to xray and bounty scan
+  # httpx_result.txt use to xray and bounty templates scan
   - name: httpx
     silent: true
     cmds:
