@@ -86,7 +86,8 @@ modules:
   - name: httpx
     silent: true
     cmds:
-      - cat naabu_result.txt | httpx -silent | tee httpx_result.txt
+      - cat naabu_result.txt | httpx -title -silent | sort | uniq -f1 | tee title_fitler_output.txt
+      - cat title_fitler_output.txt | anew | morefind -u | tee httpx_result.txt
 
   # - name: get cname for myself check
   #   silent: true
@@ -102,7 +103,7 @@ modules:
   - name: clear files
     silent: true
     cmds:
-      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt ksubdomain_output_temp.txt ksubdomain_output.txt subdomain_output.txt 
+      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt ksubdomain_output_temp.txt ksubdomain_output.txt subdomain_output.txt tee title_fitler_output.txt
 
 # result are similar
 # demo.example.com
