@@ -63,7 +63,7 @@ modules:
   - name: ksubdomain
     silent: true
     cmds:
-      - ksubdomain e --ds {{DOMAIN}} -f ~/wordlists/domain/subdoamin.txt -o ksubdomain_output_temp.txt
+      - ksubdomain e --ds domains.txt -f ~/wordlists/domain/subdoamin.txt --wild-filter-mode basic --predict -o ksubdomain_output_temp.txt
       - cat ksubdomain_output.txt | morefind -d | tee ksubdomain_output.txt
 
   - name: organize
@@ -108,5 +108,3 @@ modules:
 # demo.example.com
 # demo.example.com:7001
 # http://demo.example.com:7001
-
-
