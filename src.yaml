@@ -25,17 +25,23 @@ modules:
     cmds:
       # if get gov.cn use -fs fqdn, because dn is subdomain grab it will grabing more gov website out of ranges.
       - cat {{URL}} | katana -d 5 -jc -jsl -xhr -kf all -fx -fs rdn | tee katana_result.txt
-  
+
+  - name: hakrawler
+    silent: true
+    cmds:
+      - cat {{ULR}} | hakrawler | tee hakrawler_result.txt
+
   - name: conform
     silent: true
     cmds:
-      - cat gau_result.txt katana_result.txt | anew | tee urls_result.txt
+      - cat gau_result.txt katana_result.txt hakrawler_result.txt | anew | tee urls_result.txt
 
   - name: filter js
     silent: true
     cmds:
       - cat urls_result.txt | grep '.js$' | tee jsurls_result.txt
 
+  # here tools get sensitive and manual endpoints
   - name: urlfinder
     silent: true
     cmds:
@@ -90,4 +96,4 @@ modules:
   - name: clean
     silent: true
     cmds:
-      - rm -rf gau_result.txt katana_result.txt sensitive_output.txt
+      - rm -rf gau_result.txt katana_result.txt hakrawler_result.txt sensitive_output.txt
