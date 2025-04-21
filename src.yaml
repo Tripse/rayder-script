@@ -20,7 +20,7 @@ modules:
     cmds:
       - cat {{URL}} | gauu --proxy http://127.0.0.1:7890 | tee gau_result.txt
 
-  - name: katana 
+  - name: katana
     silent: true
     cmds:
       # if get gov.cn use -fs fqdn, because dn is subdomain grab it will grabing more gov website out of ranges.
@@ -29,7 +29,7 @@ modules:
   - name: hakrawler
     silent: true
     cmds:
-      - cat {{ULR}} | hakrawler | tee hakrawler_result.txt
+      - cat {{URL}} | hakrawler | tee hakrawler_result.txt
 
   - name: conform
     silent: true
