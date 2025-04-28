@@ -1,6 +1,6 @@
 
 # author: leadlife
-# get subdomain from subfinder, crt.sh (tls), rapiddns, hackerone api, ksubdomain brute force, alterx gen, dnsx validation ... more
+# get subdomain from subfinder, crt.sh (tls), rapiddns, hackerone api, shuffledns brute force, alterx gen, dnsx validation ... more
 
 vars:
   DOMAIN: "domains.txt"
@@ -60,16 +60,15 @@ modules:
       - cat {{DOMAIN}} | parallel -j 4 'curl "https://api.subdomain.center/?domain={}"' | anew | morefind -d | tee subdomain_center_output.txt
 
     # active brute force subdomain
-  - name: ksubdomain
+  - name: shuffledns
     silent: true
     cmds:
-      - ksubdomain e --ds domains.txt -f ~/wordlists/domain/subdoamin.txt --wild-filter-mode basic --predict -o ksubdomain_output_temp.txt
-      - cat ksubdomain_output_temp.txt | morefind -d | tee ksubdomain_output.txt
+      - shuffledns -d domains.txt -w ~/wordlists/domain/subdoamin.txt -r ~/wordlists/sup/resolvers.txt -mode bruteforce -o shuffledns_result.txt
 
   - name: organize
     silent: true
     cmds:
-      - cat subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt ksubdomain_output.txt | anew subdomain_output.txt
+      - cat subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt shuffledns_result.txt | anew subdomain_output.txt
   
   - name: dnsx
     silent: true
@@ -80,7 +79,7 @@ modules:
   - name: naabu
     silent: true
     cmds:
-      - cat subdomain_result.txt | naabu -Pn -top-ports 1000 -silent -c 200 -rate 10000 -o naabu_result.txt
+      - cat subdomain_result.txt | naabu -Pn -pf ~/wordlists/sup/top-ports/top50_http_naabu.txt -silent -c 200 -rate 10000 -o naabu_result.txt
   
   # httpx_result.txt use to xray and bounty templates scan
   - name: httpx
@@ -103,7 +102,7 @@ modules:
   - name: clear files
     silent: true
     cmds:
-      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt ksubdomain_output_temp.txt ksubdomain_output.txt subdomain_output.txt tee title_fitler_output.txt
+      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt shuffledns_result.txt subdomain_output.txt title_fitler_output.txt
 
 # result are similar
 # demo.example.com
