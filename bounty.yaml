@@ -15,7 +15,7 @@ vars:
 parallel: false
 
 modules:  
-  # stop gau for lots of  tragets
+  # stop gau for lots of tragets
   # - name: gau
   #   silent: true
   #   cmds:
@@ -27,7 +27,7 @@ modules:
       # if get gov.cn use -fs fqdn, because dn is subdomain grab it will grabing more gov website out of ranges.
       - cat {{URL}} | katana -jc -jsl -xhr -kf all -fx -fs fqdn | tee katana_result.txt
   
-  - name: conform
+  - name: conform & filter
     silent: true
     cmds:
       - cat katana_result.txt | anew | tee urls_result.txt
