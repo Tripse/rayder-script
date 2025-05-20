@@ -35,7 +35,7 @@ modules:
     silent: true
     cmds:
       - cat gau_result.txt katana_result.txt hakrawler_result.txt | anew | tee urls_result.txt
-      - cat urls_result.txt | anewp | anew | tee urls_params_result.txt
+      - cat urls_result.txt | anewp | tee params_result.txt
 
   - name: filter js
     silent: true
@@ -51,7 +51,7 @@ modules:
   - name: cariddi
     silent: true
     cmds:
-      - cat {{URL}} | cariddi -s -e -info -ext 7 -sf ~/wordlists/sup/keywords.txt -rua -ot cariddi_result
+      - cat {{URL}} | cariddi -s -e -info -ext 7 -sf ~/wordlists/sup/keywords.txt -rua -ot cariddi_result.txt
 
   - name: sensitive
     silent: true
@@ -59,40 +59,20 @@ modules:
       - cat urls_result.txt | gff intersting_ext_bounty | httpx -silent -fc 404 | tee sensitive_output.txt
       - cat sensitive_output.txt | grep -v -E '\.(jpg|jpeg|gif|png|PNG|svg|ico|js|com|css|jhtml|html|do|jsp|php|asp|aspx|jspx|tif|tiff|ttf|woff|woff2)$' | tee sensitive_result.txt
 
-  - name: lfi dast
+  - name: nuclei dast
     silent: true
     cmds:
-      - cat urls_result.txt | gff lfi | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/lfi/ -dast | tee lfi_result.txt
-
-  - name: sqli dast
-    silent: true
-    cmds:
-      - cat urls_result.txt | gff sqli | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/sqli/ -dast | tee sqli_result.txt
-
-  - name: ssrf dast
-    silent: true
-    cmds:
-      - cat urls_result.txt | gff ssrf | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/ssrf/ -dast | tee ssrf_result.txt
-    
-  - name: rce dast
-    silent: true
-    cmds:
-      - cat urls_result.txt | gff rce | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/cmdi/ -dast | tee rce_result.txt
-
-  - name: ssti dast
-    silent: true
-    cmds:
-      - cat urls_result.txt | gff ssti | uro | sed 's/=.*/=/' | anew | nuclei -t ~/nuclei-tripse/dast/ssti/ -dast | tee ssti_result.txt
+      - cat urls_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast -lfa | tee dast_template_result.txt
   
   - name: nuclei bounty
     silent: true
     cmds:
-      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty | tee bounty_template_result.txt
+      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ -egm -lfa | tee bounty_template_result.txt
 
   - name: dalfox reflection xss
     silent: true
     cmds:
-      - cat urls_result.txt | grep -Ev '\.(jpg|jpeg|gif|css|tif|tiff|png|ttf|woff|woff2|ico|pdf|svg|txt)$' | anew | dalfox pipe --skip-bav --skip-mining-dom -S --only-poc r --ignore-return 302,404,403 -o xss_result.txt
+      - cat params_result.txt| uro | dalfox pipe --skip-bav --skip-mining-dom -S --only-poc r --ignore-return 302,404,403 -o xss_result.txt
   
   - name: clean
     silent: true
