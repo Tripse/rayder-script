@@ -79,9 +79,9 @@ modules:
   - name: naabu
     silent: true
     cmds:
-      - cat subdomain_result.txt | naabu -Pn -pf ~/wordlists/sup/top-ports/top50_http_naabu.txt -silent -c 200 -rate 10000 -o naabu_result.txt
+      - cat subdomain_result.txt | naabu -Pn -top-ports 1000 -silent -c 200 -rate 10000 -o naabu_result.txt
   
-  # httpx_result.txt use to xray and bounty templates scan
+  # httpx_result.txt use to bounty templates scan
   - name: httpx
     silent: true
     cmds:
