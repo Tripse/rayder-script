@@ -48,7 +48,7 @@ modules:
   - name: nuclei bounty
     silent: true
     cmds:
-      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ -egm -lfa | tee bounty_template_result.txt
+      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ -lfa | tee bounty_template_result.txt
 
   - name: dalfox reflection xss
     silent: true
