@@ -1,6 +1,10 @@
 
 # author: leadlife
-# get subdomain from subfinder, crt.sh (tls), rapiddns, hackerone api, shuffledns brute force, alterx gen, dnsx validation ... more
+# get subdomain rayder workflow
+# result are similar
+# demo.example.com
+# demo.example.com:7001
+# http://demo.example.com:7001
 
 vars:
   DOMAIN: "domains.txt"
@@ -60,33 +64,32 @@ modules:
       - cat {{DOMAIN}} | parallel -j 4 'curl "https://api.subdomain.center/?domain={}"' | anew | morefind -d | tee subdomain_center_output.txt
 
     # active brute force subdomain
-  - name: shuffledns
+  - name: puredns bruteforce
     silent: true
     cmds:
-      - shuffledns -d domains.txt -w ~/wordlists/domain/subdoamin.txt -r ~/wordlists/sup/resolvers.txt -mode bruteforce -o shuffledns_result.txt
+      - puredns bruteforce ~/wordlists/domain/subdoamin.txt -d {{DOMAIN}} -r ~/wordlists/sup/resolvers.txt -q | tee puredns_output.txt
 
   - name: organize
     silent: true
     cmds:
-      - cat subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt shuffledns_result.txt | anew subdomain_result.txt
+      - cat subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt | anew subdomain_output.txt
   
-  # - name: dnsx
-  #   silent: true
-  #   cmds:
-  #     - cat subdomain_output.txt | anew | dnsx -silent -r ~/wordlists/sup/resolvers.txt -t 200 | tee subdomain_result.txt
-  
+  - name: puredns resolve
+    silent: true
+    cmds:
+      - cat subdomain_output.txt | puredns resolve -r ~/wordlists/sup/resolvers.txt -q | tee puredns_subdomain_result.txt
+
   # naabu_result.txt use to dddd scan
   - name: naabu
     silent: true
     cmds:
-      - cat subdomain_result.txt | naabu -Pn -top-ports 1000 -silent -c 200 -rate 10000 -o naabu_result.txt
+      - cat puredns_subdomain_result.txt | naabu -Pn -top-ports 1000 -silent -c 200 -rate 10000 -o naabu_result.txt
   
   # httpx_result.txt use to bounty templates scan
   - name: httpx
     silent: true
     cmds:
-      - cat naabu_result.txt | httpx -title -silent | uniq -f1 | tee title_fitler_output.txt
-      - cat title_fitler_output.txt | anew | morefind -u | tee httpx_result.txt
+      - cat naabu_result.txt | httpx -silent | tee httpx_result.txt
 
   # - name: get cname for myself check
   #   silent: true
@@ -102,9 +105,4 @@ modules:
   - name: clear files
     silent: true
     cmds:
-      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt shuffledns_result.txt subdomain_output.txt title_fitler_output.txt
-
-# result are similar
-# demo.example.com
-# demo.example.com:7001
-# http://demo.example.com:7001
+      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt subdomain_output.txt
