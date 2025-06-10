@@ -1,12 +1,5 @@
 # author: leadlife
 # bounty rayder workflow
-# cyber tools: gau, katana, nuclei, dalfox
-# sup tools: anew, gf, httpx, uro
-
-# require tools: 
-# https://github.com/Tripse/gf-patterns-ng
-# https://github.com/Tripse/rayder-script
-# https://github.com/Tripse/nuclei-tripse
 
 vars:
   URL: "httpx_result.txt"

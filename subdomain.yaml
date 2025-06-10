@@ -1,10 +1,6 @@
 
 # author: leadlife
 # get subdomain rayder workflow
-# result are similar
-# demo.example.com
-# demo.example.com:7001
-# http://demo.example.com:7001
 
 vars:
   DOMAIN: "domains.txt"
