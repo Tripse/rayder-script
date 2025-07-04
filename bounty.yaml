@@ -50,7 +50,7 @@ modules:
   - name: sensitive
     silent: true
     cmds:
-      - cat urls_result.txt | gff intersting_ext_bounty | httpx -silent -fc 404 | tee sensitive_output.txt
+      - cat urls_result.txt | gff intersting_ext_bounty | httpx -silent -mc 200,404 | tee sensitive_output.txt
       - cat sensitive_output.txt | grep -v -E '\.(jpg|jpeg|gif|png|PNG|svg|ico|js|com|css|jhtml|html|do|jsp|php|asp|aspx|jspx|tif|tiff|ttf|woff|woff2)$' | tee sensitive_result.txt
 
   - name: nuclei dast
