@@ -38,16 +38,16 @@ modules:
     cmds:
       - cat params_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast -lfa | tee dast_template_result.txt
 
-  - name: nuclei bounty
-    silent: true
-    cmds:
-      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ -lfa | tee bounty_template_result.txt
-
   - name: dalfox reflection xss
     silent: true
     cmds:
       - cat params_result.txt| uro | dalfox pipe --skip-bav --skip-mining-dom -S --only-poc r --ignore-return 302,404,403 -o xss_result.txt
   
+  - name: nuclei bounty
+    silent: true
+    cmds:
+      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ -lfa | tee bounty_template_result.txt
+
   - name: clean
     silent: true
     cmds:
