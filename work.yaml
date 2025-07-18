@@ -37,18 +37,22 @@ modules:
     silent: true
     cmds:
       - cat params_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast -lfa | tee dast_template_result.txt
+      - echo "work.yaml workflow - nuclei dast scan over" | notify
 
   - name: dalfox reflection xss
     silent: true
     cmds:
       - cat params_result.txt| uro | dalfox pipe --skip-bav --skip-mining-dom -S --only-poc r --ignore-return 302,404,403 -o xss_result.txt
+      - echo "work.yaml workflow - dalfox reflection xss scan over" | notify
   
   - name: nuclei bounty
     silent: true
     cmds:
       - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ -lfa | tee bounty_template_result.txt
+      - echo "work.yaml workflow - nuclei bounty template scan over" | notify
 
   - name: clean
     silent: true
     cmds:
       - rm -rf gau_result.txt katana_result.txt sensitive_output.txt
+      - echo "work.yaml workflow over" | notify

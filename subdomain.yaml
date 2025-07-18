@@ -102,3 +102,8 @@ modules:
     silent: true
     cmds:
       - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt subdomain_output.txt
+    
+  - name: notify
+    silent: true
+    cmds:
+      - echo "subdomain.yaml workflow over" | notify
