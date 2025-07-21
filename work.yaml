@@ -43,8 +43,8 @@ modules:
     silent: true
     cmds:
       - wscan ws --url-file params_result.txt --html-output wscan_result.html
-      - echo "work.yaml workflow - wscan over | notify"
-      
+      - echo "work.yaml workflow - wscan over" | notify
+
   - name: dalfox reflection xss
     silent: true
     cmds:

@@ -1,5 +1,6 @@
 # author: leadlife
 # src rayder workflow
+# pls run "wscan ws" to gen config file befor run workflow
 
 
 vars:
@@ -35,12 +36,6 @@ modules:
     silent: true
     cmds:
       - cat urls_result.txt | grep '.js$' | tee jsurls_result.txt
-
-  # here tools get sensitive and manual endpoints
-  - name: urlfinder
-    silent: true
-    cmds:
-      - urlfinder -i -f {{URL}} -s 200,500 -z 3 -o .
 
   - name: cariddi
     silent: true
