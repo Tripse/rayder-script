@@ -9,10 +9,10 @@ vars:
 parallel: false
 
 modules:  
-  # - name: gau
-  #   silent: true
-  #   cmds:
-  #     - cat {{URL}} | gauu --proxy http://127.0.0.1:7890 | tee gau_result.txt
+  - name: gau
+    silent: true
+    cmds:
+      - cat {{URL}} | gauu --proxy http://127.0.0.1:7890 | tee gau_result.txt
 
   - name: katana
     silent: true
@@ -57,6 +57,11 @@ modules:
     silent: true
     cmds:
       - cat params_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast -lfa | tee dast_template_result.txt
+
+  - name: wscan
+    silent: true
+    cmds:
+      - wscan ws --url-file params_result.txt --html-output wscan_result.html
 
   - name: dalfox reflection xss
     silent: true

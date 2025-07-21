@@ -39,6 +39,12 @@ modules:
       - cat params_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast -lfa | tee dast_template_result.txt
       - echo "work.yaml workflow - nuclei dast scan over" | notify
 
+  - name: wscan
+    silent: true
+    cmds:
+      - wscan ws --url-file params_result.txt --html-output wscan_result.html
+      - echo "work.yaml workflow - wscan over | notify"
+      
   - name: dalfox reflection xss
     silent: true
     cmds:
