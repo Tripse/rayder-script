@@ -1,6 +1,7 @@
 
 # author: leadlife
 # get subdomain rayder workflow
+# export GITHUB_TOKEN=token1,token2...
 
 vars:
   DOMAIN: "domains.txt"
@@ -13,6 +14,12 @@ modules:
     silent: true
     cmds: 
       - cat {{DOMAIN}} | subfinder -silent -all | anew subfinder_output.txt
+
+  - name: github-subdomains
+    silent: true
+    cmds:
+      - github-subdomains -f {{DOMAIN}} -o github_subdomains_output.txt
+
 
   - name: crt - ssl
     silent: true
@@ -68,7 +75,7 @@ modules:
   - name: organize
     silent: true
     cmds:
-      - cat subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt | anew subdomain_output.txt
+      - cat subfinder_output.txt github_subdomains_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt | anew subdomain_output.txt
   
   - name: puredns resolve
     silent: true
@@ -101,7 +108,7 @@ modules:
   - name: clear files
     silent: true
     cmds:
-      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt subdomain_output.txt
+      - rm -rf subfinder_output.txt github_subdomains_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt subdomain_output.txt
     
   - name: notify
     silent: true
