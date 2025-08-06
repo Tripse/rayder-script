@@ -25,7 +25,7 @@ modules:
     cmds:
       - cat katana_result.txt | anew | tee urls_result.txt
       # - cat gau_result.txt katana_result.txt | anew | tee urls_result.txt
-      - cat urls_result.txt | anewp | tee params_result.txt
+      - cat urls_result.txt | anewp | uro | tee params_result.txt
 
   - name: sensitive
     silent: true
@@ -36,7 +36,7 @@ modules:
   - name: nuclei dast
     silent: true
     cmds:
-      - cat params_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast -lfa | tee dast_template_result.txt
+      - cat params_result.txt | nuclei -t ~/nuclei-tripse/dast/ -dast -lfa | tee dast_template_result.txt
       - echo "work.yaml workflow - nuclei dast scan over" | notify
 
   - name: wscan
@@ -48,7 +48,7 @@ modules:
   - name: dalfox reflection xss
     silent: true
     cmds:
-      - cat params_result.txt| uro | dalfox pipe --skip-bav --skip-mining-dom -S --only-poc r --ignore-return 302,404,403 -o xss_result.txt
+      - cat params_result.txt | dalfox pipe --skip-bav --skip-mining-dom -S --only-poc r --ignore-return 302,404,403 -o xss_result.txt
       - echo "work.yaml workflow - dalfox reflection xss scan over" | notify
   
   - name: nuclei bounty
