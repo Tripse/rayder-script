@@ -63,7 +63,7 @@ modules:
   - name: puredns bruteforce
     silent: true
     cmds:
-      - puredns bruteforce ~/wordlists/domain/subdoamin.txt -d {{DOMAIN}} -r ~/wordlists/sup/resolvers.txt -q | tee puredns_output.txt
+      - puredns bruteforce ~/wordlists/domain/common.txt -d {{DOMAIN}} -r ~/wordlists/sup/resolvers.txt -q | tee puredns_output.txt
 
   - name: organize
     silent: true
