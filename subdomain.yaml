@@ -63,7 +63,7 @@ modules:
   - name: puredns bruteforce
     silent: true
     cmds:
-      - puredns bruteforce ~/wordlists/domain/common.txt -d {{DOMAIN}} -r ~/wordlists/sup/resolvers.txt -q | tee puredns_output.txt
+      - puredns bruteforce ~/wordlists/domain/common.txt -d {{DOMAIN}} -r ~/wordlists/domain/resolvers.txt -q | tee puredns_output.txt
 
   - name: organize
     silent: true
@@ -73,7 +73,7 @@ modules:
   - name: puredns resolve
     silent: true
     cmds:
-      - cat subdomain_output.txt | puredns resolve -r ~/wordlists/sup/resolvers.txt -q | tee puredns_subdomain_result.txt
+      - cat subdomain_output.txt | puredns resolve -r ~/wordlists/domain/resolvers.txt -q | tee puredns_subdomain_result.txt
 
   # naabu_result.txt use to dddd scan
   - name: naabu
