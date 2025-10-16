@@ -10,10 +10,10 @@ vars:
 parallel: false
 
 modules:  
-  - name: gau
-    silent: true
-    cmds:
-      - cat {{URL}} | gauu --proxy http://127.0.0.1:7890 | tee gau_result.txt
+  # - name: gau
+  #   silent: true
+  #   cmds:
+  #     - cat {{URL}} | gauu --proxy http://127.0.0.1:7890 | tee gau_result.txt
 
   - name: katana
     silent: true
