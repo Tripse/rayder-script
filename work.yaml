@@ -8,52 +8,17 @@ vars:
 parallel: false
 
 modules:  
-  # stop gau for lots of tragets
-  # - name: gau
-  #   silent: true
-  #   cmds:
-  #     - cat {{URL}} | gauu | tee gau_result.txt
-
-  - name: katana
+  - name: dddd
     silent: true
     cmds:
-      # if get gov.cn use -fs fqdn, because dn is subdomain grab it will grabing more gov website out of ranges.
-      - cat {{URL}} | katana -jc -jsl -xhr -kf all -fx -fs fqdn | tee katana_result.txt
-  
-  - name: conform & filter
-    silent: true
-    cmds:
-      - cat katana_result.txt | anew | tee urls_result.txt
-      # - cat gau_result.txt katana_result.txt | anew | tee urls_result.txt
-      - cat urls_result.txt | anewp | uro | tee params_result.txt
-
-  - name: sensitive
-    silent: true
-    cmds:
-      - cat urls_result.txt | gff intersting_ext_bounty | httpx -silent -fc 404 | tee sensitive_output.txt
-      - cat sensitive_output.txt | grep -v -E '\.(jpg|jpeg|gif|png|PNG|svg|ico|js|com|css|jhtml|html|do|jsp|php|asp|aspx|jspx|tif|tiff|ttf|woff|woff2)$' | tee sensitive_result.txt
-
-  - name: nuclei dast
-    silent: true
-    cmds:
-      - cat params_result.txt | nuclei -t ~/nuclei-tripse/dast/ -dast -lfa | tee dast_template_result.txt
+      - dddd -t {{URL}}
 
   - name: wscan
     silent: true
     cmds:
-      - wscan ws --url-file params_result.txt --html-output wscan_result.html
-
-  - name: dalfox reflection xss
-    silent: true
-    cmds:
-      - cat params_result.txt | dalfox pipe --skip-bav --skip-mining-dom -S --only-poc r --ignore-return 302,404,403 -o xss_result.txt
+      - wscan ws --url-file {{URL}} --html-output wscan_result.html
   
   - name: nuclei bounty
     silent: true
     cmds:
       - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ -lfa | tee bounty_template_result.txt
-
-  - name: clean
-    silent: true
-    cmds:
-      - rm -rf gau_result.txt katana_result.txt sensitive_output.txt
