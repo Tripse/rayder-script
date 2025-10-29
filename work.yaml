@@ -5,7 +5,7 @@ vars:
   URL: "httpx_result.txt"
   USAGE: "rayder -w workflow.yaml URL=httpx_result.txt"
 
-parallel: false
+parallel: true
 
 modules:  
   - name: dddd
@@ -21,4 +21,4 @@ modules:
   - name: nuclei bounty
     silent: true
     cmds:
-      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ -lfa | tee bounty_template_result.txt
+      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ -c 150 -rl 300 -lfa | tee bounty_template_result.txt
