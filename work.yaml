@@ -1,6 +1,6 @@
 # author: leadlife
 # bounty rayder workflow
-# delete wscan
+
 vars:
   URL: "httpx_result.txt"
   USAGE: "rayder -w workflow.yaml URL=httpx_result.txt"
