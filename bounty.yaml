@@ -32,15 +32,15 @@ modules:
       - cat gau_result.txt katana_result.txt hakrawler_result.txt | anew | tee urls_result.txt
       - cat urls_result.txt | anewp | tee params_result.txt
 
-  - name: filter js
-    silent: true
-    cmds:
-      - cat urls_result.txt | grep '.js$' | tee jsurls_result.txt
+  # - name: filter js
+  #   silent: true
+  #   cmds:
+  #     - cat urls_result.txt | grep '.js$' | tee jsurls_result.txt
 
-  - name: cariddi
-    silent: true
-    cmds:
-      - cat {{URL}} | cariddi -s -e -info -ext 7 -sf ~/wordlists/sup/keywords.txt -rua -ot cariddi_result.txt
+  # - name: cariddi
+  #   silent: true
+  #   cmds:
+  #     - cat {{URL}} | cariddi -s -e -info -ext 7 -sf ~/wordlists/sup/keywords.txt -rua -ot cariddi_result.txt
 
   - name: sensitive
     silent: true
@@ -53,10 +53,10 @@ modules:
     cmds:
       - cat params_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast -lfa | tee dast_template_result.txt
 
-  - name: wscan
-    silent: true
-    cmds:
-      - wscan ws --url-file params_result.txt --html-output wscan_result.html
+  # - name: wscan
+  #   silent: true
+  #   cmds:
+  #     - wscan ws --url-file params_result.txt --html-output wscan_result.html
 
   - name: dalfox reflection xss
     silent: true

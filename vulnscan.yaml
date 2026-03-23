@@ -1,0 +1,24 @@
+# author: leadlife
+# vulnscan use to work
+
+vars:
+  URL: "ips.txt"
+  USAGE: "rayder -w workflow.yaml URL=ips.txt"
+
+parallel: false
+
+modules:  
+  - name: fscan recon
+    silent: false
+    cmds:
+      - sudo fscan -hf {{URL}} -np -t 30 -o fscan_result.txt
+  
+  - name: fscan smb
+    silent: false
+    cmds:
+      - sudo fscan -hf {{URL}} -m smb -t 30
+
+  - name: dddd
+    silent: false
+    cmds:
+      - sudo dddd -t fscan_result.txt -nb -tst 50 -tc 50 -wt 50
