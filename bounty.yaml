@@ -40,7 +40,7 @@ modules:
   # - name: cariddi
   #   silent: true
   #   cmds:
-  #     - cat {{URL}} | cariddi -s -e -info -ext 7 -sf ~/wordlists/sup/keywords.txt -rua -ot cariddi_result.txt
+  #     - cat {{URL}} | cariddi -s -e -info -ext 7 -sf ~/wordlists/keywords.txt -rua -ot cariddi_result.txt
 
   - name: sensitive
     silent: true
@@ -51,7 +51,7 @@ modules:
   - name: nuclei dast
     silent: true
     cmds:
-      - cat params_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast -lfa | tee dast_template_result.txt
+      - cat params_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast | tee dast_template_result.txt
 
   # - name: wscan
   #   silent: true
@@ -66,7 +66,7 @@ modules:
   - name: nuclei bounty
     silent: true
     cmds:
-      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ -egm -lfa | tee bounty_template_result.txt
+      - cat {{URL}} | nuclei -t ~/nuclei-tripse/bounty/ | tee bounty_template_result.txt
 
   - name: clean
     silent: true

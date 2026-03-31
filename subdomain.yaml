@@ -4,7 +4,7 @@
 
 vars:
   DOMAIN: "domains.txt"
-  USAGE: "rayder -w subdomain-mutli.yaml DOMAIN=domains.txt"
+  USAGE: "rayder -w subdomain.yaml DOMAIN=domains.txt"
 
 parallel: false
 
