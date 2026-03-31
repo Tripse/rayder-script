@@ -17,7 +17,7 @@ modules:
   - name: crt - ssl
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://crt.sh/?q=%.{}&output=json"' | jq -r '.[].name_value' | anew crt_ssl_output.txt
+      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://crt.sh/?q=%.{}&output=json" -H "User-Agent: Mozilla/5.0"' | jq -r '.[].name_value' | anew crt_ssl_output.txt
 
   - name: certspotter - ssl
     silent: true
