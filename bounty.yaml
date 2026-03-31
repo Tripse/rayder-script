@@ -53,11 +53,6 @@ modules:
     cmds:
       - cat params_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast | tee dast_template_result.txt
 
-  # - name: wscan
-  #   silent: true
-  #   cmds:
-  #     - wscan ws --url-file params_result.txt --html-output wscan_result.html
-
   - name: dalfox reflection xss
     silent: true
     cmds:

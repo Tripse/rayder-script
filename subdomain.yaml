@@ -17,47 +17,38 @@ modules:
   - name: crt - ssl
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://crt.sh/?q=%.{}&output=json" -H "User-Agent: Mozilla/5.0"' | jq -r '.[].name_value' | anew crt_ssl_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "https://crt.sh/?q=%.{}&output=json"' | jq -r '.[].name_value' | anew crt_ssl_output.txt
 
   - name: certspotter - ssl
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://api.certspotter.com/v1/issuances?domain={}&include_subdomains=true&expand=dns_names"' | jq -r '.[].dns_names' | morefind -d | anew | tee certspotter_ssl_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "https://api.certspotter.com/v1/issuances?domain={}&include_subdomains=true&expand=dns_names"' | jq -r '.[].dns_names' | morefind -d | anew | tee certspotter_ssl_output.txt
 
   - name: web archive
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'curl -s "http://web.archive.org/cdx/search/cdx?url=*.{}/*&output=text&fl=original&collapse=urlkey"' | sed -e 's_https*://__' -e "s/\/.*//" | sort -u | anew | tee web_archive_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "http://web.archive.org/cdx/search/cdx?url=*.{}/*&output=text&fl=original&collapse=urlkey"' | sed -e 's_https*://__' -e "s/\/.*//" | sort -u | anew | tee web_archive_output.txt
 
   - name: jldc
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://jldc.me/anubis/subdomains/{}"' | morefind -d | anew | tee jldc_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "https://jldc.me/anubis/subdomains/{}"' | morefind -d | anew | tee jldc_output.txt
 
-  - name: anubis
-    silent: true
-    cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://jldc.me/anubis/subdomains/{}"' | morefind -d | anew | tee anubis_output.txt
 
   - name: rapiddns
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'rapiddns -s {}' | anew rapiddns_output.txt
-
-  - name: hackerone
-    silent: true
-    cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://api.hackertarget.com/hostsearch/?q={}"' | anew | morefind -d | tee hackerone_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'rapiddns -s {}' | anew rapiddns_output.txt
 
   - name: hackertarget
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'curl -s "https://api.hackertarget.com/hostsearch/?q={}"' | anew | morefind -d | tee hackertarget_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "https://api.hackertarget.com/hostsearch/?q={}"' | anew | morefind -d | tee hackertarget_output.txt
 
   - name: subdomain center
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 4 'curl "https://api.subdomain.center/?domain={}"' | anew | morefind -d | tee subdomain_center_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -A "Mozilla/5.0" "https://api.subdomain.center/?domain={}"' | anew | morefind -d | tee subdomain_center_output.txt
 
     # active brute force subdomain
   - name: puredns bruteforce
@@ -68,7 +59,7 @@ modules:
   - name: organize
     silent: true
     cmds:
-      - cat subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt | anew subdomain_output.txt
+      - cat subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt rapiddns_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt | anew subdomain_output.txt
   
   - name: puredns resolve
     silent: true
@@ -86,22 +77,11 @@ modules:
     silent: true
     cmds:
       - cat naabu_result.txt | httpx -silent | tee httpx_result.txt
-
-  # - name: get cname for myself check
-  #   silent: true
-  #   cmds:
-  #     - cat subdomain_result.txt | while read domain;do dig $domain;done | tee -a digs.txt
-  #     - cat digs.txt | grep CNAME | tee cname_result.txt
-  
-  # - name: subzy takeover check
-  #   silent: true
-  #   cmds:
-  #     - subzy run --targets subdomain_result.txt | tee -a subzy_result.txt
   
   - name: clear files
     silent: true
     cmds:
-      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt anubis_output.txt rapiddns_output.txt hackerone_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt subdomain_output.txt
+      - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt rapiddns_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt subdomain_output.txt
     
   - name: notify
     silent: true
