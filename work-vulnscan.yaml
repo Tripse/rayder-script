@@ -1,0 +1,25 @@
+# author: leadlife
+# use to work for wai network.txt
+
+vars:
+  IPS: "ips.txt"
+  USAGE: "rayder -w workflow.yaml IPS=ips.txt"
+
+parallel: false
+
+modules:  
+  - name: naabu portscan
+    silent: false
+    cmds:
+      - cat {{IPS}} | naabu -pf ~/wordlists/ports/top.txt -silent | tee naabu_result.txt
+      # - cat {{IPS}} | naabu -p 0-65535 | tee naabu_result.txt
+
+  - name: dddd
+    silent: false
+    cmds:
+      - dddd -t naabu_result.txt -ni -et oast,oob -o dddd_result.txt
+
+  - name: fscan smb
+    silent: false
+    cmds:
+      - fscan -hf {{IPS}} -m smb -o fscan_result.txt

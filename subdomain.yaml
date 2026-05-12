@@ -22,17 +22,17 @@ modules:
   - name: certspotter - ssl
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "https://api.certspotter.com/v1/issuances?domain={}&include_subdomains=true&expand=dns_names"' | jq -r '.[].dns_names' | morefind -d | anew | tee certspotter_ssl_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "https://api.certspotter.com/v1/issuances?domain={}&include_subdomains=true&expand=dns_names"' | jq -r '.[].dns_names' | morefind -d | anew certspotter_ssl_output.txt
 
   - name: web archive
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "http://web.archive.org/cdx/search/cdx?url=*.{}/*&output=text&fl=original&collapse=urlkey"' | sed -e 's_https*://__' -e "s/\/.*//" | sort -u | anew | tee web_archive_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "http://web.archive.org/cdx/search/cdx?url=*.{}/*&output=text&fl=original&collapse=urlkey"' | sed -e 's_https*://__' -e "s/\/.*//" | sort -u | anew web_archive_output.txt
 
   - name: jldc
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "https://jldc.me/anubis/subdomains/{}"' | morefind -d | anew | tee jldc_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "https://jldc.me/anubis/subdomains/{}"' | morefind -d | anew jldc_output.txt
 
 
   - name: rapiddns
@@ -43,18 +43,18 @@ modules:
   - name: hackertarget
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "https://api.hackertarget.com/hostsearch/?q={}"' | anew | morefind -d | tee hackertarget_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -s -A "Mozilla/5.0" "https://api.hackertarget.com/hostsearch/?q={}"' | anew | morefind -d | tee -a hackertarget_output.txt
 
   - name: subdomain center
     silent: true
     cmds:
-      - cat {{DOMAIN}} | parallel -j 2 'curl -A "Mozilla/5.0" "https://api.subdomain.center/?domain={}"' | anew | morefind -d | tee subdomain_center_output.txt
+      - cat {{DOMAIN}} | parallel -j 2 'curl -A "Mozilla/5.0" "https://api.subdomain.center/?domain={}"' | anew | morefind -d | tee -a subdomain_center_output.txt
 
     # active brute force subdomain
   - name: puredns bruteforce
     silent: true
     cmds:
-      - puredns bruteforce ~/wordlists/domain/common.txt -d {{DOMAIN}} -r ~/wordlists/domain/resolvers.txt -q | tee puredns_output.txt
+      - puredns bruteforce ~/wordlists/domain/common.txt -d {{DOMAIN}} -r ~/wordlists/domain/resolvers.txt -q | tee -a puredns_output.txt
 
   - name: organize
     silent: true
@@ -64,7 +64,7 @@ modules:
   - name: puredns resolve
     silent: true
     cmds:
-      - cat subdomain_output.txt | puredns resolve -r ~/wordlists/domain/resolvers.txt -q | tee puredns_subdomain_result.txt
+      - cat subdomain_output.txt | puredns resolve -r ~/wordlists/domain/resolvers.txt -q | tee -a puredns_subdomain_result.txt
 
   # naabu_result.txt use to dddd scan
   - name: naabu
@@ -76,14 +76,10 @@ modules:
   - name: httpx
     silent: true
     cmds:
-      - cat naabu_result.txt | httpx -silent | tee httpx_result.txt
+      - cat naabu_result.txt | httpx -silent | tee -a httpx_result.txt
   
   - name: clear files
     silent: true
     cmds:
       - rm -rf subfinder_output.txt crt_ssl_output.txt certspotter_ssl_output.txt web_archive_output.txt jldc_output.txt rapiddns_output.txt hackertarget_output.txt subdomain_center_output.txt puredns_output.txt subdomain_output.txt
     
-  - name: notify
-    silent: true
-    cmds:
-      - echo "subdomain.yaml workflow over" | notify

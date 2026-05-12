@@ -1,8 +1,4 @@
-# author: leadlife
-# src rayder workflow
 # pls use subdomain's httpx_result.txt
-
-
 vars:
   URL: "httpx_result.txt"
   USAGE: "rayder -w workflow.yaml URL=httpx_result.txt"
@@ -38,16 +34,16 @@ modules:
       - cat urls_result.txt | gff intersting_ext_bounty | httpx -silent -mc 200,404 | tee -a sensitive_output.txt
       - cat sensitive_output.txt | grep -v -E '\.(jpg|jpeg|gif|png|PNG|svg|ico|js|com|css|jhtml|html|do|jsp|php|asp|aspx|jspx|tif|tiff|ttf|woff|woff2)$' | tee -a sensitive_result.txt
 
+  - name: dddd 
+    silent: true
+    cmds:
+      - dddd -t httpx_result.txt -o dddd_result.txt
+
   - name: nuclei dast
     silent: true
     cmds:
       - cat params_result.txt | uro | nuclei -t ~/nuclei-tripse/dast/ -dast | tee -a dast_template_result.txt
 
-  - name: dalfox reflection xss
-    silent: true
-    cmds:
-      - cat params_result.txt| uro | dalfox pipe --skip-bav --skip-mining-dom -S --only-poc r --ignore-return 302,404,403 -o xss_result.txt
-  
   - name: nuclei bounty
     silent: true
     cmds:
